@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2-5 일정 알리미</title>
+    <style>
+        .section-title {
+    padding-bottom: 5px;
+    border-bottom: 2px solid #333;
+    margin-top: 20px;
+}
+
+.text2 {
+        width : 900px ;
+        height : 100px ;
+        text-align : center ;
+        line-height : 100px;
+        color : white ;
+        font-size : 30pt;
+        background-color: dodgerblue ;
+        border : 5px solid deepskyblue ;
+      }
+
+.list-box {
+    background: #b7d0eb;
+    padding: 15px;
+    border-radius: 5px;
+    width: 300pt;
+    margin-top: 20px;
+}
+
+#list {
+    padding-left: 0;
+}
+
+#list li {
+    list-style: none;
+    padding-left: 20px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#list li::before {
+    content: "✔"; 
+    position: absolute;
+    left: 0;
+    color: #087cca;
+    font-weight: bold;
+}
+    </style>
+    <script>
+        function addItem() {
+            var newItem = document.createElement("li");
+            newItem.innerHTML = document.getElementById("box").value;
+            newItem.onclick = removeItem;
+            document.getElementById("list").appendChild(newItem);
+            saveList();
+        }
+
+        function removeItem() {
+            document.getElementById("list").removeChild(this);
+            saveList();
+        }
+
+        function saveList() {
+            localStorage.storedList = document.getElementById("list").innerHTML;
+        }
+
+        function loadList() {
+    var list = document.getElementById("list");
+    list.innerHTML = localStorage.storedList || "";
+    for (var i = 0; i < list.children.length; i++) {
+        list.children[i].onclick = removeItem;
+    }
+}
+    </script>
+</head>
+<body>
+    <h1 class="text2"> <2-5 일정 알리미> </h1>
+    <h4 style="color:dodgerblue; font-size : 16pt "><i> ❤️수행평가와 시험 범위 및 시간표를 알려드립니다!</i> </h4>
+   <h3 class="section-title">✅to do list</h3>
+
+    <p style="font-size : 10pt ; color : Gray ">-추가 버튼을 눌러서 할 일을 추가하고, 목록에서 누르면 할 일이 삭제됩니다. </p>
+   
+    <input type="text" id="box" style="width: 200px; height: 30px; background: url('your-icon.png') no-repeat left center; background-size: 20px; font-size : 13pt " placeholder="입력해서 할 일 추가하기"/>
+    <br/>
+    <p></p>
+    <input type="button" style="background-color:dodgerblue; color:white; border:none; padding:4px 8px; border-radius:6px;" value="추가" onclick="addItem();"/>
+
+    <br/>
+   
+    <div class="list-box">
+    <ul id="list"></ul>
+</div>
+
+    <script>
+        if (localStorage.storedList) {
+            loadList();
+        }
+    </script>
+   <h3 class="section-title">시험범위</h3>
+    <nav id="main-navigation">
+  <div class="pull-left">
+    <ul class="outer-menu">
+       <li class="outer-menu-item">
+                                  <h3 class="menu-title">공통과목</h3>
+          <ul class="inner-menu">
+             <li class="inner-menu-item"> <b>독서</b> </1i>
+             <input type="button" value="시험범위" style="background-color:salmon; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;"onclick="toggleInfo('read','▶교과서 <br> - 2-6단원 주제 통합적 읽기(군주론, 목민심서 )<br>- 3-1단원 인문,예술 분야의 글 읽기(우리 안의 마녀 사냥) <br>- 3-3단원 과학,기술 분야의 글 읽기(원자 모형의 변천 과정) <br>▶매3비 <br> - 인문 4일째 <br> - 사회 10일째 <br> - 과학 16일째 <br> - 기술 24일째 <br> - 혼합제재 29일째')">
+             <div id="read"></div>
+             <li class="inner-menu-item"><b>수학2</b></1i>
+             <input type="button" value="시험범위" style="background-color:RoyalBlue; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('math','▶교과서 : 함수의 그래프부터 정적분의 활용 넓이까지. <br> - 90p.~142p. (102p.~109p. 중 중간고사 범위 제외) <br> - 148p.~151p. (1,2,3,4,5,6,7,8,9,10,11,15,16번) <br> - 152p.~155p. (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,21,22,23번) <br> ▶부교재(활동지) <br> - 28p.~45p. <br> ▶교과서 외에도 시험범위 단원과 관련된 모든 문제 출제 가능.')">
+             <div id="math"></div>
+             <li class="inner-menu-item"><b>영어2</b></1i>
+             <input type="button" value="시험범위" style="background-color:MediumPurple; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('eng','▶교과서 <br> - 3, 4, 5 단원 본문 <br> ▶ reading master <br> - 리뷰모고의고사 4회 9~12번 / 5회 1~8번 <br> - 15강, 16강 (2, 3, 4, 5번) <br> ▶2025학년도 10월 고2 학력평가 18번~45번')">
+             <div id="eng"></div>
+             <li class="inner-menu-item"><b>한국사</b></1i>
+             <input type="button" value="시험범위" style="background-color:DimGray; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('his','▶교과서 p.50~p.82<br>▶부교재 p.27~p.56')">
+             <div id="his"></div>
+            </ul>
+       </li>
+    </ul>
+    <ul class="outer-menu">
+       <li class="outer-menu-item">
+                                  <h3 class="menu-title">선택과목</h3>
+          <ul class="inner-menu">
+             <li class="inner-menu-item"><b>물리학1</b></1i>
+             <input type="button" value="시험범위" style="background-color:CornflowerBlue; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('phy','▶완자 148p.~끝까지 (원자와 자기력부터 끝까지)')">
+             <div id="phy"></div>
+             <li class="inner-menu-item"><b>생명과학1</b></1i>
+             <input type="button" value="시험범위" style="background-color:ForestGreen; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('bio','▶완자 182p.~335p. (유전~생태계와 상호작용) <br> - 부교재 외에도 시험범위 단원과 관련된 모든 문제 출제 가능')">
+             <div id="bio"></div>
+             <li class="inner-menu-item"><b>화학1</b></1i>
+             <input type="button" value="시험범위" style="background-color:Crimson; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('che','▶완자 152p.~끝까지 (화학결합과 분자의 세계~역동적인 화학 반응) <br> - 4단원 역동적인 화학 반응에서 화학 반응에서의 열의 출입 부분은 내용도 문제도 제외')">
+             <div id="che"></div>
+             <li class="inner-menu-item"><b>세계지리</b></1i>
+             <input type="button" value="시험범위" style="background-color:Orange; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('geo','▶교과서 50p.~93p.')">
+             <div id="geo"></div>
+             <li class="inner-menu-item"><b>확률과통계</b></1i>
+             <input type="button" value="시험범위" style="background-color:Tomato; color:white; border:none; padding:4px 4px; border-radius:6px; margin-bottom: 5px;" onclick="toggleInfo('sta','▶교과서 65p.~129p. (단, 71p.~73p.는 11,12,14번만) <br> - 교과서 외에도 시험범위 단원과 관련된 모든 문제 출제 가능')">
+             <div id="sta"></div>
+            </ul>
+       </li>
+    </ul>
+<script>
+function toggleInfo(id, text) {
+    const container = document.getElementById(id);
+    container.innerHTML = (container.innerHTML === "") ? text : "";
+}
+</script>
+<h3 class="section-title">2-5 시간표</h3>
+<table border="1" style="background-color : #b7d0eb ; border-radius: 5pt ; border-color : #1b3b81 ; color : #1b3b81;" >
+    <thread>
+    <tr>
+        <th>   </th>
+        <th> 월 </th>
+        <th> 화 </th>
+        <th> 수 </th>
+        <th> 목 </th>
+        <th> 금 </th>
+    </tr>
+    </thread>
+    <tbody>
+        <tr>
+        <td>1교시</td>
+        <td>영어2</td>
+        <td><div style="text-align : center;">영어2</div></td>
+        <td><div style="text-align : center;">F</div></td>
+        <td>수학2</td>
+        <td>한국사</td>
+        </tr>
+        <tr>
+        <td>2교시</td>
+        <td><div style="text-align : center;">독서</div></td>
+        <td><div style="text-align : center;">D</div></td>
+        <td>영어2</td>
+        <td><div style="text-align : center;">F</div></td>
+        <td><div style="text-align : center;">E</div></td>
+        </tr>
+        <tr>
+        <td>3교시</td>
+        <td> <div style="text-align : center;">D</div>
+        </td>
+        <td><div style="text-align : center;">한국사</div></td>
+        <td> <div style="text-align : center;">수학2 </div></td>
+        <td><div style="text-align : center;">영어2</div></td>
+        <td><div style="text-align : center;">D</div></td>
+        </tr>
+        <tr>
+        <td>4교시</td>
+        <td> <div style="text-align : center;"> 자율 </div></td>
+        <td><div style="text-align : center;">E</div></td>
+        <td><div style="text-align : center;">음악</div></td>
+        <td>수학2</td>
+        <td><div style="text-align : center;">음악</div></td>
+        </tr>
+        <tr>
+        <td>5교시</td>
+        <td> <div style="text-align : center;"> U1 </div></td>
+        <td><div style="text-align : center;">독서</div></td>
+        <td><div style="text-align : center;">U2</div></td>
+        <td> <div style="text-align : center;"> E </div></td>
+        <td><div style="text-align : center;">수학2</div></td>
+        </tr>
+        <tr>
+        <td>6교시</td>
+        <td> <div style="text-align : center;"> E </div></td>
+        <td><div style="text-align : center;">F</div></td>
+        <td><div style="text-align : center;">U3</div></td>
+        <td> <div style="text-align : center;"> 체육 </div></td>
+        <td><div style="text-align : center;">진로</div></td>
+        </tr>
+        <tr>
+        <td>7교시</td>
+        <td> <div style="text-align : center;"> F </div></td>
+        <td><div style="text-align : center;">수학2</div></td>
+        <td><div style="text-align : center;">동아리</div></td>
+        <td> <div style="text-align : center;"> D </div></td>
+        <td><div style="text-align : center;">독서 </div></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

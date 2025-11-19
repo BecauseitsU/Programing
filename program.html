@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Schedule Calendar</title>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <style>
+    /* ===== CSS 통합 시작 ===== */
+
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #008aff;
+    }
+
+    .wrapper {
+      width: 450px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 25px;
+    }
+
+    /* Header */
+    .wrapper header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px 30px 10px;
+    }
+
+    header .current-date {
+      font-size: 1.45rem;
+      font-weight: 600;
+    }
+
+    header .icons span {
+      width: 38px;
+      height: 38px;
+      color: #555;
+      font-size: 30px;
+      margin: 0 3px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 38px;
+      border-radius: 50%;
+      user-select: none;
+    }
+
+    /* Calendar Layout */
+    .calendar ul {
+      display: flex;
+      list-style: none;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .calendar .weeks li {
+      font-weight: 600;
+    }
+
+    .calendar ul li {
+      width: calc(100% / 7);
+      position: relative;
+      margin-top: 20px;
+    }
+
+    /* 날짜 */
+    .days li {
+      cursor: pointer;
+      z-index: 2;
+      font-weight: 500;
+    }
+
+    .days li.inactive {
+      color: #aaa;
+    }
+
+    .days li.today {
+      font-weight: 700;
+      color: #ff0000;
+    }
+
+    .days li::before {
+      position: absolute;
+      content: "";
+      height: 40px;
+      width: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .days li:hover::before {
+      background: #f2f2f2;
+    }
+
+    .days li.active::before {
+      background: #008aff;
+    }
+
+    /* 일정 스타일 */
+    .schedule {
+      font-size: 12px;
+      margin-top: 3px;
+      display: block;
+      padding: 2px 4px;
+      background: #008aff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <p class="current-date"></p>
+      <div class="icons">
+        <span id="prev" class="material-symbols-rounded">chevron_left</span>
+        <span id="next" class="material-symbols-rounded">chevron_right</span>
+      </div>
+    </header>
+
+    <div class="calendar">
+      <ul class="weeks">
+        <li>Sun</li>
+        <li>Mon</li>
+        <li>Tue</li>
+        <li>Wed</li>
+        <li>Thu</li>
+        <li>Fri</li>
+        <li>Sat</li>
+      </ul>
+
+      <ul class="days"></ul>
+    </div>
+  </div>
+
+  <script>
+    /* ===== JavaScript : 일정 기능 + UI 통합 ===== */
+
+    const daysTag = document.querySelector(".days");
+    const currentDate = document.querySelector(".current-date");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+
+    let date = new Date();
+    let currYear = date.getFullYear();
+    let currMonth = date.getMonth();
+
+    let schedules = {}; // 일정 저장
+
+    function renderCalendar() {
+      let firstDay = new Date(currYear, currMonth, 1).getDay();
+      let lastDate = new Date(currYear, currMonth + 1, 0).getDate();
+      let prevLastDate = new Date(currYear, currMonth, 0).getDate();
+
+      let html = "";
+
+     currentDate.innerText = `${currYear}. ${currMonth + 1}`;
+
+      // 지난달 날짜
+      for (let i = firstDay; i > 0; i--) {
+        html += `<li class="inactive">${prevLastDate - i + 1}</li>`;
+      }
+
+      // 이번달 날짜
+      for (let day = 1; day <= lastDate; day++) {
+        const isToday =
+          day === date.getDate() &&
+          currMonth === date.getMonth() &&
+          currYear === date.getFullYear()
+            ? "today"
+            : "";
+
+        const dateKey = `${currYear}-${currMonth}-${day}`;
+
+        html += `<li class="${isToday}" data-day="${day}" data-key="${dateKey}">${day}</li>`;
+      }
+
+      // 다음달 날짜
+      let nextDays = 42 - (firstDay + lastDate);
+      for (let i = 1; i <= nextDays; i++) {
+        html += `<li class="inactive">${i}</li>`;
+      }
+
+      daysTag.innerHTML = html;
+
+      // 일정 다시 표시
+      document.querySelectorAll(".days li").forEach((li) => {
+        const key = li.dataset.key;
+        if (!key) return;
+
+        // 일정 추가
+        li.addEventListener("click", () => {
+          let text = prompt(`${li.dataset.day}일 일정 추가:`);
+
+          if (text) {
+            if (!schedules[key]) schedules[key] = [];
+            schedules[key].push(text);
+            renderCalendar();
+          }
+        });
+
+        // 일정 출력
+        if (schedules[key]) {
+          schedules[key].forEach((txt, index) => {
+            const scheduleEl = document.createElement("span");
+            scheduleEl.className = "schedule";
+            scheduleEl.innerText = "- " + txt;
+
+            scheduleEl.onclick = (e) => {
+              e.stopPropagation();
+              if (confirm(`"${txt}" 삭제할까요?`)) {
+                schedules[key].splice(index, 1);
+                if (schedules[key].length === 0) delete schedules[key];
+                renderCalendar();
+              }
+            };
+
+            li.appendChild(scheduleEl);
+          });
+        }
+      });
+    }
+
+    prevBtn.onclick = () => {
+      currMonth--;
+      if (currMonth < 0) {
+        currMonth = 11;
+        currYear--;
+      }
+      renderCalendar();
+    };
+
+    nextBtn.onclick = () => {
+      currMonth++;
+      if (currMonth > 11) {
+        currMonth = 0;
+        currYear++;
+      }
+      renderCalendar();
+    };
+
+    renderCalendar();
+  </script>
+</body>
+</html>
+
+
