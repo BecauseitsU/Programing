@@ -252,17 +252,24 @@
 
     renderCalendar();
   </script>
-    <script>
-        window.onload = function() {
-            if (localStorage.storedList) {
-                loadList();
-            }
-        }
-    </script>
+  <script>
+function saveSchedules() {
+    localStorage.setItem("schedules", JSON.stringify(schedules));
+}
+
+
+function loadSchedules() {
+    const stored = localStorage.getItem("schedules");
+    if (stored) {
+        schedules = JSON.parse(stored);
+    }
+}
+  </script>
 </body>
 </html>
 </body>
 </html>
+
 
 
 
