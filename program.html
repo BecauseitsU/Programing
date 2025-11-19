@@ -252,16 +252,19 @@
 
     renderCalendar();
   </script>
-<script>
-  window.onload = function() {
-    loadSchedules();
-    renderCalendar(); 
-}
+  <script>
+    window.onload = function() {
+      if (localStorage.storedList) {
+        loadSchedules();
+        renderCalendar();
+      }
+    }
   </script>
 </body>
 </html>
 </body>
 </html>
+
 
 
 
