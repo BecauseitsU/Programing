@@ -10,11 +10,9 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 
   <style>
-    /* ===== CSS 통합 시작 ===== */
-
     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-    * {
+    {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -36,7 +34,6 @@
       padding: 25px;
     }
 
-    /* Header */
     .wrapper header {
       display: flex;
       align-items: center;
@@ -61,8 +58,6 @@
       border-radius: 50%;
       user-select: none;
     }
-
-    /* Calendar Layout */
     .calendar ul {
       display: flex;
       list-style: none;
@@ -79,8 +74,7 @@
       position: relative;
       margin-top: 20px;
     }
-
-    /* 날짜 */
+    
     .days li {
       cursor: pointer;
       z-index: 2;
@@ -115,8 +109,7 @@
     .days li.active::before {
       background: #008aff;
     }
-
-    /* 일정 스타일 */
+    
     .schedule {
       font-size: 12px;
       margin-top: 3px;
@@ -157,7 +150,6 @@
   </div>
 
   <script>
-    /* ===== JavaScript : 일정 기능 + UI 통합 ===== */
 
     const daysTag = document.querySelector(".days");
     const currentDate = document.querySelector(".current-date");
@@ -178,13 +170,10 @@
       let html = "";
 
      currentDate.innerText = `${currYear}. ${currMonth + 1}`;
-
-      // 지난달 날짜
       for (let i = firstDay; i > 0; i--) {
         html += `<li class="inactive">${prevLastDate - i + 1}</li>`;
       }
 
-      // 이번달 날짜
       for (let day = 1; day <= lastDate; day++) {
         const isToday =
           day === date.getDate() &&
@@ -197,8 +186,7 @@
 
         html += `<li class="${isToday}" data-day="${day}" data-key="${dateKey}">${day}</li>`;
       }
-
-      // 다음달 날짜
+      
       let nextDays = 42 - (firstDay + lastDate);
       for (let i = 1; i <= nextDays; i++) {
         html += `<li class="inactive">${i}</li>`;
@@ -206,12 +194,12 @@
 
       daysTag.innerHTML = html;
 
-      // 일정 다시 표시
+      
       document.querySelectorAll(".days li").forEach((li) => {
         const key = li.dataset.key;
         if (!key) return;
 
-        // 일정 추가
+      
         li.addEventListener("click", () => {
           let text = prompt(`${li.dataset.day}일 일정 추가:`);
 
@@ -222,7 +210,7 @@
           }
         });
 
-        // 일정 출력
+        
         if (schedules[key]) {
           schedules[key].forEach((txt, index) => {
             const scheduleEl = document.createElement("span");
@@ -264,7 +252,17 @@
 
     renderCalendar();
   </script>
+    <script>
+        window.onload = function() {
+            if (localStorage.storedList) {
+                loadList();
+            }
+        }
+    </script>
 </body>
 </html>
+</body>
+</html>
+
 
 
