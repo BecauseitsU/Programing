@@ -264,11 +264,35 @@ function loadSchedules() {
         schedules = JSON.parse(stored);
     }
 }
+  
+li.addEventListener("click", () => {
+    let text = prompt(`${li.dataset.day}일 일정 추가:`);
+    if (text) {
+        if (!schedules[key]) schedules[key] = [];
+        schedules[key].push(text);
+        saveSchedules();  
+        renderCalendar();
+    }
+});
+
+scheduleEl.onclick = (e) => {
+    e.stopPropagation();
+    if (confirm(`"${txt}" 삭제할까요?`)) {
+        schedules[key].splice(index, 1);
+        if (schedules[key].length === 0) delete schedules[key];
+        saveSchedules(); 
+        renderCalendar();
+    }
+};window.onload = function() {
+    loadSchedules();
+    renderCalendar(); 
+};
   </script>
 </body>
 </html>
 </body>
 </html>
+
 
 
 
